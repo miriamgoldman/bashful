@@ -1,0 +1,30 @@
+# Example functions from zhsrc
+
+
+# Change the ~/Scripts directory to where you store your bash scripts.
+# Change the output directory if desired.
+function acquia_multisite_db() {
+  SITE=$1
+  ENV=$2
+ 
+  cd ~/Scripts 
+
+  cat acquia-multisite-db-size.sh | ssh $SITE.$ENV@$SITE.ssh.prod.acquia-sites.com > ~/Reports/Acquia/$SITE-$ENV-dbsize-$(date +"%Y-%m-%d-%H-%M-%S").txt
+
+}
+
+function acquia_multisite_files() {
+  SITE=$1
+  ENV=$2
+ 
+  cd ~/Scripts 
+
+  cat acquia-multisite-filesize.sh | ssh $SITE.$ENV@$SITE.ssh.prod.acquia-sites.com > ~/Reports/Acquia/$SITE-$ENV-files-$(date +"%Y-%m-%d-%H-%M-%S").txt
+
+}
+
+# Helpful if somethings your machine token goes boom.
+terminus_reload_machine_token() {
+terminus auth:logout
+terminus auth:login --machine-token=MACHINE_TOKEN_GOES_HERE
+}
