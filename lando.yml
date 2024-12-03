@@ -1,0 +1,24 @@
+name: projectname
+recipe: pantheon
+config:
+  framework: framework # drupal8 or wordpress
+  site: sitename # Pull from Pantheon
+  id: siteid # Pull from Pantheon
+
+# Disable all pushes, and code/file pull. Only DB for now.
+tooling:
+  pull:
+    description: Disable code pull
+    options:
+      database:
+        default: live
+      files:
+        default: none
+      code:
+        default: none
+  push: disabled
+  switch:
+    description: Switch to Multidev with no files.
+    options:
+      files:
+        default: none
