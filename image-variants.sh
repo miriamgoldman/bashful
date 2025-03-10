@@ -10,7 +10,7 @@ read -p "Enter the site name: " site_name
 read -p "Enter the environment: " site_env
 foldername="${site}"
 read -p "Enter in a friendly name to lead the report: " nicename
-folder="$site_name-$site_env"
+folder="../$site_name-$site_env"
 
 
 timestamp=$(date +"%Y-%m-%d %H:%M:%S")
@@ -163,6 +163,7 @@ if [ -d "$folder/sites" ]; then
     echo "* Total file count percentage savings: ${final_file_savings_percentage}%" >> "${report_file}"
     echo "* Total filesize percentage savings: ${final_size_savings_percentage}%" >> "${report_file}"
 else
+    echo "Processing regular site..."
     # Regular WordPress sites.
     for year in "$folder"/*/; do
         if [[ -d $year && $(basename "$year") =~ ^[0-9]{4}$ ]]; then
