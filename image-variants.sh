@@ -176,16 +176,6 @@ else
                 done
         fi
     done
-    total_before_readable=$(convert_to_readable "$total_before")
-    
-    echo "## Final analysis" >> "${report_file}"
-    echo "* Total filesize before optimization: $total_before ($total_before_readable) : amounting to ${total_before_filecount} files" >> "${report_file}"
-    total_after_readable=$(convert_to_readable "$total_after")
-    echo "* Total filesize after optimization: $total_after ($total_after_readable) : amounting to ${total_after_filecount} files" >> "${report_file}"
-    final_file_savings_percentage=$(echo "scale=2; ($total_after_filecount / $total_before_filecount) * 100" | bc)
-    final_size_savings_percentage=$(echo "scale=2; ($total_after / $total_before) * 100" | bc)
-    echo "* Total file count percentage savings: ${final_file_savings_percentage}%" >> "${report_file}"
-    echo "* Total filesize percentage savings: ${final_size_savings_percentage}%" >> "${report_file}"
 fi
 
 echo "- [Image Savings Report]($(gh gist create "$report_file" --desc "Image Savings" | tail -n1))" >> "$report_file"
