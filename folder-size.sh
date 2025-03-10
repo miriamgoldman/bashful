@@ -6,7 +6,7 @@ read -p "Enter the environment: " site_env
 foldername="${site}"
 read -p "Enter in a friendly name to lead the report: " nicename
 file_directory="${site_name}-${site_env}"
-report_file="~/Reports/${site_name}-${site_env}-filesystem-filtered.md"
+report_file="../Reports/${site_name}-${site_env}-filesystem-filtered.md"
 timestamp=$(date +"%Y-%m-%d %H:%M:%S")
 
 
