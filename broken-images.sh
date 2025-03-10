@@ -53,15 +53,6 @@ check_images() {
             IMG_URL=$(echo "$PAGE_URL" | sed -E 's|(https?://[^/]+).*|\1|')$IMG_URL
         fi
 
-        # Extract domain from image URL
-        IMG_DOMAIN=$(echo "$IMG_URL" | awk -F[/:] '{print $4}')
-
-        # Check if the image belongs to the same domain
-        if [[ "$IMG_DOMAIN" != "$BASE_DOMAIN" ]]; then
-            echo "🔸 Skipping external image: $IMG_URL"
-            continue
-        fi
-
         # Check if image URL is reachable
         HTTP_STATUS=$(curl -o /dev/null --silent --head --write-out '%{http_code}' "$IMG_URL")
 
@@ -69,8 +60,6 @@ check_images() {
         if [[ "$HTTP_STATUS" == "404" ]]; then
             echo "❌ Broken Image (404): $IMG_URL"
             echo "$PAGE_URL, $IMG_URL, $HTTP_STATUS" >> "$LOGFILE"
-        elif [[ "$HTTP_STATUS" == "401" ]]; then
-            echo "🔒 Skipping Unauthorized (401) Image: $IMG_URL"
         fi
     done
 }
