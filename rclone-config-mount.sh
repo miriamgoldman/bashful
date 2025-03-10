@@ -68,12 +68,12 @@ read -p "Do you want to mount this as a local directory? (y/n): " mount_local
 
 if [[ $mount_local == "y" || $mount_local == "Y" ]]; then
     # Create directory
-    mkdir "~/$(whoami)/$site_label"
-    echo "Created directory /$(whoami)/$site_label"
+    mkdir "../$site_label"
+    echo "Created directory $site_label"
 
     # Mount the directory
     echo "Mounting drive..."
-    rclone mount $site_label:$mount_folder ~/$(whoami)/$site_label --daemon
+    rclone mount $site_label:$mount_folder ~/$site_label --daemon
 fi
 
 
