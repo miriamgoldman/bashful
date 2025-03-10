@@ -1,18 +1,19 @@
 
 #!/opt/homebrew/bin/bash
 
-site="ps-sentinelone-clone"
+site="powerautoraxx"
 env="live"
-read -p "Is this a multisite installation? (y/n): " is_multisite
+is_multisite="y"
+url="webops.live"
 
-if [ $is_multisite = "y" ]
-then
-    blog_id_list=$(terminus wp ${site}.${env} -- site list --format=ids --skip-plugins --skip-themes | tail -n +2)
-else
-    blog_id_list="1"
-fi
+report_location="/Users/$(whoami)/Reports/WP/${site}-orphaned-records.md"
 
-echo "Running orphaned and cached records check on ${site}.${env}..." >> "database-report.md"
+# Create a manual array of numbers (1,2,3) to loop through.
+blog_id_list="1 2 9 10 28 35 36 37 42 47"
+
+
+
+echo "Running orphaned and cached records check on ${site}.${env}..." >> $report_location
 # Loop through the blog IDs
 for blog_id in $blog_id_list
 do
@@ -54,18 +55,18 @@ do
     rev_percentage_sql_statement="SELECT COUNT(ID) as 'Total Revisions', (SELECT COUNT(ID) FROM ${post_table} WHERE post_type != 'revision') as 'Total Posts', (SELECT COUNT(ID) FROM ${post_table}) as 'Total Posts and Revisions', (SELECT COUNT(ID) FROM ${post_table} WHERE post_type = 'revision'  AND post_date < '${january_first}') as 'Total Revisions', (SELECT COUNT(ID) FROM ${post_table} WHERE post_type = 'revision' AND post_date < '${january_first}') / (SELECT COUNT(ID) FROM ${post_table}) * 100 as 'Percentage of Revisions' FROM ${post_table} WHERE post_type = 'revision' AND post_date < '${january_first}';"
     
     # Run each of the queries above via terminus, and write to markdown file
-    echo "## Blog ID: ${blog_id}" >> "database-report.md"
-    echo "### Post Meta" >> "database-report.md"
-    terminus wp ${site}.${env} -- db query "${pm_sql_statement}" | tail -n +2 >> "database-report.md"
-    echo "### Term Meta" >> "database-report.md"
-    terminus wp ${site}.${env} -- db query "${tm_sql_statement}" | tail -n +2 >> "database-report.md"
-    echo "### User Meta" >> "database-report.md"
-    terminus wp ${site}.${env} -- db query "${um_sql_statement}" | tail -n +2 >> "database-report.md"
-    echo "### Stale oEmbed" >> "database-report.md"
-    terminus wp ${site}.${env} -- db query "${oe_sql_statement}" | tail -n +2 >> "database-report.md"
-    echo "### Percentage of Revisions" >> "database-report.md"
-    terminus wp ${site}.${env} -- db query "${rev_percentage_sql_statement}" | tail -n +2 >> "database-report.md"  
-    echo "---" >> "database-report.md"
+    echo "## Blog ID: ${blog_id}" >> $report_location
+    echo "### Post Meta" >> $report_location
+    terminus wp ${site}.${env} -- db query "${pm_sql_statement}" | tail -n +2 >> $report_location
+    echo "### Term Meta" >> $report_location
+    terminus wp ${site}.${env} -- db query "${tm_sql_statement}" | tail -n +2 >> $report_location
+    echo "### User Meta" >> $report_location
+    terminus wp ${site}.${env} -- db query "${um_sql_statement}" | tail -n +2 >> $report_location
+    echo "### Stale oEmbed" >> $report_location
+    terminus wp ${site}.${env} -- db query "${oe_sql_statement}" | tail -n +2 >> $report_location
+    echo "### Percentage of Revisions" >> $report_location
+    terminus wp ${site}.${env} -- db query "${rev_percentage_sql_statement}" | tail -n +2 >> $report_location  
+    echo "---" >> $report_location
 done
 
 
