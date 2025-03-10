@@ -60,9 +60,10 @@ process_images() {
                     echo "## Report for: $current_folder"
                     # Get total size of the folder in bytes
                     filesize_bytes=$(dust -j "$folder" | jq '.size' | xargs)
+                    bytes=$(echo "$filesize_bytes" | sed 's/[^0-9]//g')
                     filesize_readable=$(convert_to_readable "$filesize_bytes")
-                    echo "* Total filesize: $filesize_readable ($filesize_bytes bytes)"
-                    total_before=$((total_before + filesize_bytes))
+                    echo "* Total filesize: $filesize_readable"
+                    total_before=$((total_before + bytes))
                     
                     # Accurate file count using `fd`
                     filecount=$(fd . "$folder" --type f | wc -l | xargs)
