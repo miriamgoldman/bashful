@@ -8,7 +8,6 @@ username=$(whoami)
 
 read -p "Enter the site name: " site_name
 read -p "Enter the environment: " site_env
-foldername="${site}"
 read -p "Enter in a friendly name to lead the report: " nicename
 folder="../$site_name-$site_env"
 
@@ -16,7 +15,7 @@ folder="../$site_name-$site_env"
 timestamp=$(date +"%Y-%m-%d %H:%M:%S")
 
 reports_dir="../Reports"
-report_file="$reports_dir/${foldername}_analysis_report.md"
+report_file="$reports_dir/${site_name}_analysis_report.md"
 
 
 echo "# Filesize Analysis for ${nicename}" >> "${report_file}"
@@ -167,8 +166,10 @@ else
     echo "Processing regular site..."
     # Regular WordPress sites.
     for year in "$folder"/*/; do
+        echo ${year}
         if [[ -d $year && $(basename "$year") =~ ^[0-9]{4}$ ]]; then
                 for month in "$year"/*; do
+                    echo "${month}"
                     if [[ -d $month ]]; then
                         process_images $month
                     fi
