@@ -14,6 +14,7 @@ read -p "Is this an Acquia site or Pantheon site? Please enter in lowercase (acq
 read -p "Enter the site name: " site
 read -p "Enter the environment: " env
 
+
 echo "Configuring rclone for $site.$env"
 
     if [[ $provider == "acquia" ]]; then
@@ -52,7 +53,7 @@ echo "Configuring rclone for $site.$env"
     # Delete any existing rclone config for this site. Keep it clean.
     rclone config delete $site_label
     
-    rclone config create $site_label sftp \
+    rclone config create --non-interactive $site_label sftp \
         host $sftp_hostname \
         user $sftp_username \
         port $port \
@@ -60,17 +61,19 @@ echo "Configuring rclone for $site.$env"
         shell_type unix \
         md5sum_command none \
         sha1sum_command none
+    
+
 
 read -p "Do you want to mount this as a local directory? (y/n): " mount_local
 
 if [[ $mount_local == "y" || $mount_local == "Y" ]]; then
     # Create directory
-    mkdir "/Users/$(whoami)/$site_label"
-    echo "Created directory /Users/$(whoami)/$site_label"
+    mkdir "~/$(whoami)/$site_label"
+    echo "Created directory /$(whoami)/$site_label"
 
     # Mount the directory
     echo "Mounting drive..."
-    rclone mount $site_label:$mount_folder /Users/$(whoami)/$site_label
+    rclone mount $site_label:$mount_folder ~/$(whoami)/$site_label --daemon
 fi
 
 
