@@ -15,7 +15,7 @@ folder="$site_name-$site_env"
 
 timestamp=$(date +"%Y-%m-%d %H:%M:%S")
 
-reports_dir="~/Reports"
+reports_dir="../Reports"
 report_file="$reports_dir/${foldername}_analysis_report.md"
 
 
@@ -51,8 +51,8 @@ process_images() {
     current_folder=$(echo "$folder" | sed -E 's|^/Users/[^/]+/[^/]+/||')
     current_folder="wp-content/uploads/${current_folder}"
     echo "Analyzing folder: $folder"
-    unique_file="$reports_dir/${foldername}/${foldername}-variants.txt"
-    filtered_file="$reports_dir/${foldername}/${foldername}-variants-filtered.txt"
+    unique_file="$reports_dir/${site_name}-variants.txt"
+    filtered_file="$reports_dir/${site_name}-variants-filtered.txt"
     touch $filtered_file
     touch $unique_file
 
