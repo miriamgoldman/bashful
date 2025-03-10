@@ -28,9 +28,8 @@ total_after=0
 total_after_filecount=0
 
 
-# Helper function to convert bytes to a human-readable format
 convert_to_readable() {
-    bytes=$1
+    bytes=$(echo "$1" | sed 's/[^0-9]//g')  # Remove non-numeric characters
     if (( bytes >= 1073741824 )); then
         echo "$(echo "scale=2; $bytes / 1073741824" | bc)G"
     elif (( bytes >= 1048576 )); then
@@ -41,6 +40,7 @@ convert_to_readable() {
         echo "${bytes}B"
     fi
 }
+
 
 process_images() {
     local folder="$1"
